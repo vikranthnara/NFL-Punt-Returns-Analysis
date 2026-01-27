@@ -4,7 +4,9 @@ import csv
 from io import StringIO
 
 # Configuration - point to parent directory
-BASE_DIR = Path("../nfl-big-data-bowl-2022")
+BASE_DIR = Path("NFLBigDataBowl/data_filtering/nfl-big-data-bowl-2022").resolve()
+
+
 
 print("="*70)
 print("VALIDATING CSV FILE STRUCTURES")

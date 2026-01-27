@@ -7,7 +7,7 @@ from io import StringIO
 warnings.filterwarnings('ignore')
 
 # Configuration - point to parent directory
-BASE_DIR = Path("../nfl-big-data-bowl-2022")
+BASE_DIR = Path("NFLBigDataBowl/data_filtering/nfl-big-data-bowl-2022").resolve()
 CHUNK_SIZE = 100000  # For processing large tracking files in chunks
 
 print("="*70)
