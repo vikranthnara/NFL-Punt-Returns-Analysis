@@ -1,7 +1,7 @@
 library(tidyverse)
 
 # Load the decision model results
-results <- read_csv("punt_decision_expected_wp.csv")
+results <- read_csv("Decision Model Analysis/punt_decision_expected_wp.csv")
 
 # Overall Strategy Distribution
 # How often does the model recommend each action?
