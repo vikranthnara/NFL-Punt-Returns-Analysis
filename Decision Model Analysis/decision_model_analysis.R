@@ -7,32 +7,41 @@ results <- read_csv("Decision Model Analysis/punt_decision_expected_wp.csv")
 # How often does the model recommend each action?
 strategy_summary <- results %>%
   count(best_action) %>%
-  mutate(pct = n / sum(n) * 100)
+  mutate(percentage = round((n / sum(n)) * 100, 2)) %>%
+  arrange(desc(n))
 
-print("Recommendation Distribution:")
+print("--- Strategy Distribution (The Model's Recommendations) ---")
 print(strategy_summary)
 
-# Decision Quality Metric
-# Since these were all NON-Fair Catches, how often was that correct?
-correct_decision_pct <- mean(results$best_action != "FAIR_CATCH") * 100
-message(paste0("Decision Accuracy: ", round(correct_decision_pct, 1), 
-               "% of these non-fair catches were mathematically sound."))
 
 
-# Top 5 Smartest Return Teams
-# (Highest average advantage gained over a fair catch)
-team_rankings <- results %>%
-  group_by(return_team) %>%
+# WIN PROBABILITY COMPARISON
+# This shows the 'Expected Value' of each choice across all 864 plays
+wp_comparison <- results %>%
   summarise(
-    plays = n(),
-    avg_edge = mean(adv_return_vs_fc),
-    total_wpa_added = sum(adv_return_vs_fc)
-  ) %>%
-  filter(plays > 5) %>% # Filter for sample size
-  arrange(desc(avg_edge))
+    avg_wp_if_fair_catch = mean(wp_fc, na.rm = TRUE),
+    avg_wp_if_return = mean(wp_return, na.rm = TRUE),
+    avg_wp_if_bounce = mean(wp_bounce, na.rm = TRUE)
+  )
 
-print("Top 5 Most Efficient Return Teams:")
-print(head(team_rankings, 5))
+print("--- Average Win Probability per Choice ---")
+print(wp_comparison)
+
+
+
+# Contextual Metrics
+# Showing physical conditions that lead to each recommendation
+context_analysis <- results %>%
+  group_by(best_action) %>%
+  summarise(
+    play_count = n(),
+    avg_gunner_dist = mean(closest_gunner_dist, na.rm = TRUE),
+    avg_hang_time = mean(hang_time, na.rm = TRUE),
+    avg_wp_gained_by_returning = mean(adv_return_vs_fc, na.rm = TRUE)
+  )
+
+print("--- Physical Context for Decisions ---")
+print(context_analysis)
 
 
 # Visualizing the "Danger Zone"
