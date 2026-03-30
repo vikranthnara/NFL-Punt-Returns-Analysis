@@ -44,8 +44,7 @@ print(p1)
 
 # RETURN ADVANTAGE VS GUNNER DISTANCE (SCATTER)
 
-p2 <- ggplot(df, aes(x = clo
-                     sest_gunner_dist, y = return_adv)) +
+p2 <- ggplot(df, aes(x = closest_gunner_dist, y = return_adv)) +
   geom_point(alpha = 0.5, color = "darkblue") +
   geom_smooth(method = "loess", color = "black") +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
